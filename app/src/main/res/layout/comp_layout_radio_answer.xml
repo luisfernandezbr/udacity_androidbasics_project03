@@ -8,6 +8,7 @@
     tools:showIn="@layout/activity_main">
 
     <TextView
+        android:id="@+id/textQuestionValue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -16,10 +17,12 @@
         tools:text="What of the following player was not in the champion team in the 2015/2016 season?"/>
 
     <RadioGroup
+        android:id="@+id/radioGroupAnswers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RadioButton
+            android:id="@+id/radioButtonAnswer_01"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
@@ -27,6 +30,7 @@
             />
 
         <RadioButton
+            android:id="@+id/radioButtonAnswer_02"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
@@ -34,6 +38,7 @@
             />
 
         <RadioButton
+            android:id="@+id/radioButtonAnswer_03"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
@@ -41,6 +46,7 @@
             />
 
         <RadioButton
+            android:id="@+id/radioButtonAnswer_04"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"

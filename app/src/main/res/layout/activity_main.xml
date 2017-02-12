@@ -12,9 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/buttonConfirmAnswer"
+        android:animateLayoutChanges="true"
         android:padding="16dp">
 
-        <include layout="@layout/comp_layout_text_answer"/>
+        <!--<include layout="@layout/comp_layout_text_answer"/>-->
 
     </FrameLayout>
 

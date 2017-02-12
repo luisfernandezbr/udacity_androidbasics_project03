@@ -6,10 +6,12 @@ package br.com.luisfernandezbr.androidbasics_project03.pojo;
 
 public class SingleTextQuestion extends Question {
 
+    public static final String TYPE = "SINGLE_TEXT";
+
     private Answer answer;
 
     public SingleTextQuestion(String value, Answer answer) {
-        super(value, "SINGLE_TEXT");
+        super(value, TYPE);
         this.answer = answer;
     }
 

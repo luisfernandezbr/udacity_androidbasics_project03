@@ -8,10 +8,12 @@ import java.util.List;
 
 public class SingleOptionQuestion extends Question {
 
+    public static final String TYPE = "SINGLE_OPTION";
+
     private List<Answer> answerList;
 
     public SingleOptionQuestion(String value, List<Answer> answerList) {
-        super(value, "SINGLE_OPTION");
+        super(value, TYPE);
         this.answerList = answerList;
     }
 

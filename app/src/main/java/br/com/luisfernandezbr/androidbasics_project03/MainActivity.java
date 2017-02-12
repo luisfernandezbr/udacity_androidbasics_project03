@@ -1,8 +1,20 @@
 package br.com.luisfernandezbr.androidbasics_project03;
 
+import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,21 +26,111 @@ import br.com.luisfernandezbr.androidbasics_project03.pojo.SingleTextQuestion;
 
 public class MainActivity extends AppCompatActivity {
 
+    private int currentQuestionsIndex = 0;
+
+    private List<Question> questionList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<Question> questionList = this.loadQuestions();
+        questionList = this.loadQuestions();
+
+        this.showNextQuestion(questionList, 0);
     }
+
+    private void showNextQuestion(List<Question> questionList, int currentQuestionIndex) {
+        Question question = questionList.get(currentQuestionsIndex);
+
+        loadLayoutContent().removeAllViews();
+
+        switch (question.getType()) {
+            case SingleTextQuestion.TYPE : {
+                this.showSingleTextQuestion((SingleTextQuestion) question);
+                break;
+            }
+            case SingleOptionQuestion.TYPE : {
+                this.showSingleOptionQuestion((SingleOptionQuestion) question);
+                break;
+            }
+        }
+    }
+
+    private void showSingleOptionQuestion(SingleOptionQuestion question) {
+        LinearLayout layout = this.inflateLayout(R.layout.comp_layout_radio_answer);
+        this.setQuestionTitle(layout, question.getValue());
+
+        RadioGroup radioGroup = (RadioGroup) layout.findViewById(R.id.radioGroupAnswers);
+
+        int [] radioIds = {R.id.radioButtonAnswer_01, R.id.radioButtonAnswer_02, R.id.radioButtonAnswer_03, R.id.radioButtonAnswer_04};
+
+        List<Answer> answerList = question.getAnswerList();
+
+        for (int i = 0; i < answerList.size(); i++) {
+            RadioButton radioButton = findRadioButtonById(layout, radioIds[i]);
+            Answer answer = answerList.get(i);
+            radioButton.setText(answer.getValue());
+        }
+
+        Button buttonConfirmAnswer = (Button) findViewById(R.id.buttonConfirmAnswer);
+        buttonConfirmAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showNextQuestion(questionList, currentQuestionsIndex++);
+            }
+        });
+
+        this.addQuestionView(layout);
+    }
+
+    private void addQuestionView(LinearLayout layout) {
+        this.loadLayoutContent().addView(layout);
+    }
+
+    private void showSingleTextQuestion(SingleTextQuestion question) {
+        LinearLayout layout = this.inflateLayout(R.layout.comp_layout_text_answer);
+        this.setQuestionTitle(layout, question.getValue());
+
+        EditText editAnswer = (EditText) layout.findViewById(R.id.editAnswer);
+
+        Button buttonConfirmAnswer = (Button) findViewById(R.id.buttonConfirmAnswer);
+        buttonConfirmAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        this.addQuestionView(layout);
+    }
+
+    private void setQuestionTitle(LinearLayout layout, String value) {
+        TextView textQuestionValue = (TextView) layout.findViewById(R.id.textQuestionValue);
+        textQuestionValue.setText(value);
+    }
+
+    private LinearLayout inflateLayout(@LayoutRes int resLayout) {
+        LayoutInflater inflater = getLayoutInflater();
+        return (LinearLayout) inflater.inflate(resLayout, this.loadLayoutContent(), false);
+    }
+
+    private RadioButton findRadioButtonById(LinearLayout layout, @IdRes int radioId) {
+        return (RadioButton) layout.findViewById(radioId);
+    }
+
+    private ViewGroup loadLayoutContent() {
+        return (ViewGroup) findViewById(R.id.layoutContent);
+    }
+
 
     private List<Question> loadQuestions() {
         Question question1 = this.getSingleTextQuestion();
         Question question2 = this.getSingleOptionQuestion();
 
         List<Question> questionList = new ArrayList<>(4);
-        questionList.add(question1);
         questionList.add(question2);
+        questionList.add(question1);
 
         return questionList;
     }
