@@ -7,5 +7,22 @@
     tools:context="br.com.luisfernandezbr.androidbasics_project03.MainActivity">
 
 
+    <FrameLayout
+        android:id="@+id/layoutContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttonConfirmAnswer"
+        android:padding="16dp">
+
+        <include layout="@layout/comp_layout_text_answer"/>
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/buttonConfirmAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="CONFIRM ANSWER"/>
 
 </RelativeLayout>
