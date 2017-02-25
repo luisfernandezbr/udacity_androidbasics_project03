@@ -9,12 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showSingleOptionQuestion(SingleOptionQuestion question) {
+    private void showSingleOptionQuestion(final SingleOptionQuestion question) {
         LinearLayout layout = this.inflateLayout(R.layout.comp_layout_radio_answer);
         this.setQuestionTitle(layout, question.getValue());
 
-        RadioGroup radioGroup = (RadioGroup) layout.findViewById(R.id.radioGroupAnswers);
+        final RadioGroup radioGroup = (RadioGroup) layout.findViewById(R.id.radioGroupAnswers);
 
         int [] radioIds = {R.id.radioButtonAnswer_01, R.id.radioButtonAnswer_02, R.id.radioButtonAnswer_03, R.id.radioButtonAnswer_04};
 
@@ -71,12 +73,24 @@ public class MainActivity extends AppCompatActivity {
             RadioButton radioButton = findRadioButtonById(layout, radioIds[i]);
             Answer answer = answerList.get(i);
             radioButton.setText(answer.getValue());
+
+            radioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        Toast.makeText(MainActivity.this, "" + buttonView.getText(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
 
         Button buttonConfirmAnswer = (Button) findViewById(R.id.buttonConfirmAnswer);
         buttonConfirmAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //Toast.makeText(MainActivity.this, String.format("Question: %s\nAnswer: %s", question.getValue(), editAnswer.getText().toString()), Toast.LENGTH_SHORT).show();
+
                 showNextQuestion(questionList, currentQuestionsIndex++);
             }
         });
@@ -88,17 +102,17 @@ public class MainActivity extends AppCompatActivity {
         this.loadLayoutContent().addView(layout);
     }
 
-    private void showSingleTextQuestion(SingleTextQuestion question) {
+    private void showSingleTextQuestion(final SingleTextQuestion question) {
         LinearLayout layout = this.inflateLayout(R.layout.comp_layout_text_answer);
         this.setQuestionTitle(layout, question.getValue());
 
-        EditText editAnswer = (EditText) layout.findViewById(R.id.editAnswer);
+        final EditText editAnswer = (EditText) layout.findViewById(R.id.editAnswer);
 
         Button buttonConfirmAnswer = (Button) findViewById(R.id.buttonConfirmAnswer);
         buttonConfirmAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(MainActivity.this, String.format("QUESTION:\n %s\n\nANSWER:\n %s", question.getValue(), editAnswer.getText().toString()), Toast.LENGTH_SHORT).show();
             }
         });
 
