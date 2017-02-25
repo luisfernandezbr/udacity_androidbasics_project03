@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showNextQuestion(List<Question> questionList, int currentQuestionIndex) {
-        Question question = questionList.get(currentQuestionsIndex);
+        Question question = questionList.get(currentQuestionIndex);
 
         loadLayoutContent().removeAllViews();
 
