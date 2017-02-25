@@ -25,4 +25,5 @@ public class SingleOptionQuestion extends Question {
     public boolean isCorrectAnswer(Answer answer) {
         return false;
     }
+
 }
