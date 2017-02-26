@@ -73,39 +73,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showMultipleOptionQuestion(MultipleOptionQuestion question) {
-        LinearLayout layout = this.inflateLayout(R.layout.comp_layout_checkbox_answer);
+    private void addQuestionView(LinearLayout layout) {
+        this.loadLayoutContent().addView(layout);
+    }
+
+    private void showSingleTextQuestion(final SingleTextQuestion question) {
+        LinearLayout layout = this.inflateLayout(R.layout.comp_layout_text_answer);
         this.setQuestionTitle(layout, question.getValue());
 
-        int [] checkboxIds = {R.id.checkboxAnswer_01, R.id.checkboxAnswer_02, R.id.checkboxAnswer_03, R.id.checkboxAnswer_04};
-
-        Map<Integer, Answer> answerMap = question.getAnswerMap();
-
-        for (Integer key : answerMap.keySet()) {
-            Answer answer = answerMap.get(key);
-
-            CheckBox checkbox = this.findCheckboxById(layout, checkboxIds[key - 1]);
-            checkbox.setText(answer.getValue());
-            checkbox.setTag(answer);
-            checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        Answer answer = (Answer) buttonView.getTag();
-                        Toast.makeText(MainActivity.this, String.format("ANSWER:\n%s\n%s", answer.getValue().toString(), answer.isCorrect()), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
+        final EditText editAnswer = (EditText) layout.findViewById(R.id.editAnswer);
 
         Button buttonConfirmAnswer = (Button) findViewById(R.id.buttonConfirmAnswer);
         buttonConfirmAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String userAnswer = editAnswer.getText().toString();
+                question.setUserAnswer(userAnswer);
 
-                //Toast.makeText(MainActivity.this, String.format("Question: %s\nAnswer: %s", question.getValue(), editAnswer.getText().toString()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, String.format("QUESTION:\n %s\n\nANSWER:\n %s", question.getValue(), userAnswer), Toast.LENGTH_SHORT).show();
 
                 showNextQuestion(questionList, currentQuestionsIndex);
+
             }
         });
 
@@ -122,7 +110,9 @@ public class MainActivity extends AppCompatActivity {
 
         Map<Integer, Answer> answerMap = question.getAnswerMap();
 
-        for (Integer key : answerMap.keySet()) {
+        final Integer[] selectedOption = new Integer[1];
+
+        for (final Integer key : answerMap.keySet()) {
             Answer answer = answerMap.get(key);
 
             RadioButton radioButton = this.findRadioButtonById(layout, radioIds[key - 1]);
@@ -134,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     if (isChecked) {
                         Answer answer = (Answer) buttonView.getTag();
                         Toast.makeText(MainActivity.this, String.format("ANSWER:\n%s\n%s", answer.getValue().toString(), answer.isCorrect()), Toast.LENGTH_SHORT).show();
+                        selectedOption[0] = key;
                     }
                 }
             });
@@ -145,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 //Toast.makeText(MainActivity.this, String.format("Question: %s\nAnswer: %s", question.getValue(), editAnswer.getText().toString()), Toast.LENGTH_SHORT).show();
+                question.setUserAnswer(selectedOption[0]);
 
                 showNextQuestion(questionList, currentQuestionsIndex);
             }
@@ -153,21 +145,42 @@ public class MainActivity extends AppCompatActivity {
         this.addQuestionView(layout);
     }
 
-    private void addQuestionView(LinearLayout layout) {
-        this.loadLayoutContent().addView(layout);
-    }
-
-    private void showSingleTextQuestion(final SingleTextQuestion question) {
-        LinearLayout layout = this.inflateLayout(R.layout.comp_layout_text_answer);
+    private void showMultipleOptionQuestion(final MultipleOptionQuestion question) {
+        LinearLayout layout = this.inflateLayout(R.layout.comp_layout_checkbox_answer);
         this.setQuestionTitle(layout, question.getValue());
 
-        final EditText editAnswer = (EditText) layout.findViewById(R.id.editAnswer);
+        final int [] checkboxIds = {R.id.checkboxAnswer_01, R.id.checkboxAnswer_02, R.id.checkboxAnswer_03, R.id.checkboxAnswer_04};
+
+        Map<Integer, Answer> answerMap = question.getAnswerMap();
+
+        final List<Integer> selectedOptions = new ArrayList<>(answerMap.size());
+
+        for (final Integer key : answerMap.keySet()) {
+            final Answer answer = answerMap.get(key);
+
+            CheckBox checkbox = this.findCheckboxById(layout, checkboxIds[key - 1]);
+            checkbox.setText(answer.getValue());
+            checkbox.setTag(answer);
+            checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        Answer answer = (Answer) buttonView.getTag();
+                        Toast.makeText(MainActivity.this, String.format("ANSWER:\n%s\n%s", answer.getValue().toString(), answer.isCorrect()), Toast.LENGTH_SHORT).show();
+                        selectedOptions.add(key);
+                    } else {
+                        selectedOptions.remove(key);
+                    }
+                }
+            });
+        }
 
         Button buttonConfirmAnswer = (Button) findViewById(R.id.buttonConfirmAnswer);
         buttonConfirmAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, String.format("QUESTION:\n %s\n\nANSWER:\n %s", question.getValue(), editAnswer.getText().toString()), Toast.LENGTH_SHORT).show();
+                question.setUserAnswerList(selectedOptions);
+
                 showNextQuestion(questionList, currentQuestionsIndex);
             }
         });

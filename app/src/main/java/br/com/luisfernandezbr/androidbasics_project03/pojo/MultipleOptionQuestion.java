@@ -25,10 +25,8 @@ public class MultipleOptionQuestion extends Question {
         return answerMap;
     }
 
-    public void setUserAnswers(Integer ... userAnswer) {
-        for (int i = 0; i < userAnswer.length; i++) {
-            userAnswerList.add(userAnswer[i]);
-        }
+    public void setUserAnswerList(List<Integer> userAnswerList) {
+        this.userAnswerList = userAnswerList;
     }
 
     public boolean isCorrectAnswer() {
