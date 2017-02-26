@@ -1,5 +1,7 @@
 package br.com.luisfernandezbr.androidbasics_project03;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
@@ -34,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
     private int currentQuestionsIndex = 0;
 
     private List<Question> questionList;
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, MainActivity.class);
+        context.startActivity(starter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             ResultActivity.start(this, (ArrayList<Question>) questionList);
+            finish();
         }
     }
 
@@ -91,9 +99,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String userAnswer = editAnswer.getText().toString();
                 question.setUserAnswer(userAnswer);
-
-                //Toast.makeText(MainActivity.this, String.format("QUESTION:\n %s\n\nANSWER:\n %s", question.getValue(), userAnswer), Toast.LENGTH_SHORT).show();
-
                 showNextQuestion(questionList, currentQuestionsIndex);
 
             }
@@ -105,8 +110,6 @@ public class MainActivity extends AppCompatActivity {
     private void showSingleOptionQuestion(final SingleOptionQuestion question) {
         LinearLayout layout = this.inflateLayout(R.layout.comp_layout_radio_answer);
         this.setQuestionTitle(layout, question.getValue());
-
-        final RadioGroup radioGroup = (RadioGroup) layout.findViewById(R.id.radioGroupAnswers);
 
         int [] radioIds = {R.id.radioButtonAnswer_01, R.id.radioButtonAnswer_02, R.id.radioButtonAnswer_03, R.id.radioButtonAnswer_04};
 
@@ -124,8 +127,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        Answer answer = (Answer) buttonView.getTag();
-                        //Toast.makeText(MainActivity.this, String.format("ANSWER:\n%s\n%s", answer.getValue().toString(), answer.isCorrect()), Toast.LENGTH_SHORT).show();
                         selectedOption[0] = key;
                     }
                 }
@@ -136,8 +137,6 @@ public class MainActivity extends AppCompatActivity {
         buttonConfirmAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //Toast.makeText(MainActivity.this, String.format("Question: %s\nAnswer: %s", question.getValue(), editAnswer.getText().toString()), Toast.LENGTH_SHORT).show();
                 question.setUserAnswer(selectedOption[0]);
 
                 showNextQuestion(questionList, currentQuestionsIndex);
@@ -167,9 +166,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        Answer answer = (Answer) buttonView.getTag();
-                        //Toast.makeText(MainActivity.this, String.format("ANSWER:\n%s\n%s", answer.getValue().toString(), answer.isCorrect()), Toast.LENGTH_SHORT).show();
                         selectedOptions.add(key);
+
                     } else {
                         selectedOptions.remove(key);
                     }

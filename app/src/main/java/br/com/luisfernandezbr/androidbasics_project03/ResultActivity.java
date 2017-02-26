@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,7 +62,6 @@ public class ResultActivity extends AppCompatActivity {
             }
         }
 
-        //Toast.makeText(this, result, Toast.LENGTH_LONG).show();
         TextView textResult = (TextView) findViewById(R.id.textResult);
         textResult.setText(result);
     }
@@ -114,5 +114,10 @@ public class ResultActivity extends AppCompatActivity {
         }
 
         return String.format(message, correctAnswer, userAnswer);
+    }
+
+    public void onClickPlayAgain(View view) {
+        MainActivity.start(this);
+        finish();
     }
 }
