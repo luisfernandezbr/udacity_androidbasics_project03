@@ -9,6 +9,7 @@ public class SingleTextQuestion extends Question {
     public static final String TYPE = "SINGLE_TEXT";
 
     private Answer answer;
+    private String userAnswer;
 
     public SingleTextQuestion(String value, Answer answer) {
         super(value, TYPE);
@@ -19,8 +20,15 @@ public class SingleTextQuestion extends Question {
         return answer;
     }
 
-    @Override
-    public boolean isCorrectAnswer(Answer answer) {
-        return this.answer.equals(answer);
+    public String getUserAnswer() {
+        return userAnswer;
+    }
+
+    public void setUserAnswer(String userAnswer) {
+        this.userAnswer = userAnswer;
+    }
+
+    public boolean isCorrectAnswer() {
+        return answer.getValue().toString().equalsIgnoreCase(userAnswer);
     }
 }

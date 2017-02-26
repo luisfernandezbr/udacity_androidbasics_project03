@@ -3,7 +3,7 @@ package br.com.luisfernandezbr.androidbasics_project03.pojo;
 /**
  * Created by luis.fernandez on 2/12/17.
  */
-public abstract class Question {
+public class Question {
 
     private String value;
     private String type;
@@ -24,6 +24,4 @@ public abstract class Question {
     public String getType() {
         return type;
     }
-
-    public abstract boolean isCorrectAnswer(Answer answer);
 }

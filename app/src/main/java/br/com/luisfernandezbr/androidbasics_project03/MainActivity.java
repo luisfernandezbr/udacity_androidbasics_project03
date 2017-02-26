@@ -9,9 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -19,9 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import br.com.luisfernandezbr.androidbasics_project03.pojo.Answer;
+import br.com.luisfernandezbr.androidbasics_project03.pojo.MultipleOptionQuestion;
 import br.com.luisfernandezbr.androidbasics_project03.pojo.Question;
 import br.com.luisfernandezbr.androidbasics_project03.pojo.SingleOptionQuestion;
 import br.com.luisfernandezbr.androidbasics_project03.pojo.SingleTextQuestion;
@@ -39,46 +42,57 @@ public class MainActivity extends AppCompatActivity {
 
         questionList = this.loadQuestions();
 
-        this.showNextQuestion(questionList, 0);
+        this.showNextQuestion(questionList, currentQuestionsIndex);
     }
 
     private void showNextQuestion(List<Question> questionList, int currentQuestionIndex) {
-        Question question = questionList.get(currentQuestionIndex);
 
-        loadLayoutContent().removeAllViews();
+        if (currentQuestionIndex < questionList.size()) {
+            Question question = questionList.get(currentQuestionIndex);
 
-        switch (question.getType()) {
-            case SingleTextQuestion.TYPE : {
-                this.showSingleTextQuestion((SingleTextQuestion) question);
-                break;
+            currentQuestionsIndex++;
+
+            loadLayoutContent().removeAllViews();
+
+            switch (question.getType()) {
+                case SingleTextQuestion.TYPE : {
+                    this.showSingleTextQuestion((SingleTextQuestion) question);
+                    break;
+                }
+                case SingleOptionQuestion.TYPE : {
+                    this.showSingleOptionQuestion((SingleOptionQuestion) question);
+                    break;
+                }
+                case MultipleOptionQuestion.TYPE : {
+                    this.showMultipleOptionQuestion((MultipleOptionQuestion) question);
+                    break;
+                }
             }
-            case SingleOptionQuestion.TYPE : {
-                this.showSingleOptionQuestion((SingleOptionQuestion) question);
-                break;
-            }
+        } else {
+            Toast.makeText(this, "Finalizar jogo!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void showSingleOptionQuestion(final SingleOptionQuestion question) {
-        LinearLayout layout = this.inflateLayout(R.layout.comp_layout_radio_answer);
+    private void showMultipleOptionQuestion(MultipleOptionQuestion question) {
+        LinearLayout layout = this.inflateLayout(R.layout.comp_layout_checkbox_answer);
         this.setQuestionTitle(layout, question.getValue());
 
-        final RadioGroup radioGroup = (RadioGroup) layout.findViewById(R.id.radioGroupAnswers);
+        int [] checkboxIds = {R.id.checkboxAnswer_01, R.id.checkboxAnswer_02, R.id.checkboxAnswer_03, R.id.checkboxAnswer_04};
 
-        int [] radioIds = {R.id.radioButtonAnswer_01, R.id.radioButtonAnswer_02, R.id.radioButtonAnswer_03, R.id.radioButtonAnswer_04};
+        Map<Integer, Answer> answerMap = question.getAnswerMap();
 
-        List<Answer> answerList = question.getAnswerList();
+        for (Integer key : answerMap.keySet()) {
+            Answer answer = answerMap.get(key);
 
-        for (int i = 0; i < answerList.size(); i++) {
-            RadioButton radioButton = findRadioButtonById(layout, radioIds[i]);
-            Answer answer = answerList.get(i);
-            radioButton.setText(answer.getValue());
-
-            radioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            CheckBox checkbox = this.findCheckboxById(layout, checkboxIds[key - 1]);
+            checkbox.setText(answer.getValue());
+            checkbox.setTag(answer);
+            checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        Toast.makeText(MainActivity.this, "" + buttonView.getText(), Toast.LENGTH_SHORT).show();
+                        Answer answer = (Answer) buttonView.getTag();
+                        Toast.makeText(MainActivity.this, String.format("ANSWER:\n%s\n%s", answer.getValue().toString(), answer.isCorrect()), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -91,7 +105,48 @@ public class MainActivity extends AppCompatActivity {
 
                 //Toast.makeText(MainActivity.this, String.format("Question: %s\nAnswer: %s", question.getValue(), editAnswer.getText().toString()), Toast.LENGTH_SHORT).show();
 
-                showNextQuestion(questionList, currentQuestionsIndex++);
+                showNextQuestion(questionList, currentQuestionsIndex);
+            }
+        });
+
+        this.addQuestionView(layout);
+    }
+
+    private void showSingleOptionQuestion(final SingleOptionQuestion question) {
+        LinearLayout layout = this.inflateLayout(R.layout.comp_layout_radio_answer);
+        this.setQuestionTitle(layout, question.getValue());
+
+        final RadioGroup radioGroup = (RadioGroup) layout.findViewById(R.id.radioGroupAnswers);
+
+        int [] radioIds = {R.id.radioButtonAnswer_01, R.id.radioButtonAnswer_02, R.id.radioButtonAnswer_03, R.id.radioButtonAnswer_04};
+
+        Map<Integer, Answer> answerMap = question.getAnswerMap();
+
+        for (Integer key : answerMap.keySet()) {
+            Answer answer = answerMap.get(key);
+
+            RadioButton radioButton = this.findRadioButtonById(layout, radioIds[key - 1]);
+            radioButton.setText(answer.getValue());
+            radioButton.setTag(answer);
+            radioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        Answer answer = (Answer) buttonView.getTag();
+                        Toast.makeText(MainActivity.this, String.format("ANSWER:\n%s\n%s", answer.getValue().toString(), answer.isCorrect()), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+
+        Button buttonConfirmAnswer = (Button) findViewById(R.id.buttonConfirmAnswer);
+        buttonConfirmAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Toast.makeText(MainActivity.this, String.format("Question: %s\nAnswer: %s", question.getValue(), editAnswer.getText().toString()), Toast.LENGTH_SHORT).show();
+
+                showNextQuestion(questionList, currentQuestionsIndex);
             }
         });
 
@@ -113,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, String.format("QUESTION:\n %s\n\nANSWER:\n %s", question.getValue(), editAnswer.getText().toString()), Toast.LENGTH_SHORT).show();
+                showNextQuestion(questionList, currentQuestionsIndex);
             }
         });
 
@@ -133,6 +189,10 @@ public class MainActivity extends AppCompatActivity {
         return (RadioButton) layout.findViewById(radioId);
     }
 
+    private CheckBox findCheckboxById(LinearLayout layout, @IdRes int checkboxId) {
+        return (CheckBox) layout.findViewById(checkboxId);
+    }
+
     private ViewGroup loadLayoutContent() {
         return (ViewGroup) findViewById(R.id.layoutContent);
     }
@@ -141,10 +201,14 @@ public class MainActivity extends AppCompatActivity {
     private List<Question> loadQuestions() {
         Question question1 = this.getSingleTextQuestion();
         Question question2 = this.getSingleOptionQuestion();
+        Question question3 = this.getMultipleOptionQuestion();
 
-        List<Question> questionList = new ArrayList<>(4);
+        List<Question> questionList = new ArrayList<>(2);
+
+        questionList.add(question3);
         questionList.add(question2);
-        questionList.add(question1);
+        //questionList.add(question1);
+
 
         return questionList;
     }
@@ -156,11 +220,21 @@ public class MainActivity extends AppCompatActivity {
 
     @NonNull
     private Question getSingleOptionQuestion() {
-        List<Answer> answerList = new ArrayList<>(4);
-        answerList.add(new Answer("Michael Jordan", true));
-        answerList.add(new Answer("Stephen Curry", false));
-        answerList.add(new Answer("Klay Thompson", false));
-        answerList.add(new Answer("Andre Iguodala", false));
-        return new SingleOptionQuestion("What of the following player was not in the champion team in the 2015/2016 season?", answerList);
+        Map<Integer, Answer> answerMap = new HashMap<>(4);
+        answerMap.put(1, new Answer("Michael Jordan", true));
+        answerMap.put(2, new Answer("Stephen Curry", false));
+        answerMap.put(3, new Answer("Klay Thompson", false));
+        answerMap.put(4, new Answer("Andre Iguodala", false));
+        return new SingleOptionQuestion("What of the following player was not in the champion team in the 2015/2016 season?", answerMap);
+    }
+
+    @NonNull
+    private Question getMultipleOptionQuestion() {
+        Map<Integer, Answer> answerMap = new HashMap<>(4);
+        answerMap.put(1, new Answer("White", false));
+        answerMap.put(2, new Answer("Yellow", true));
+        answerMap.put(3, new Answer("Red", false));
+        answerMap.put(4, new Answer("Blue", true));
+        return new MultipleOptionQuestion("What of the following colors are in the Golden State Warriors logo?", answerMap);
     }
 }

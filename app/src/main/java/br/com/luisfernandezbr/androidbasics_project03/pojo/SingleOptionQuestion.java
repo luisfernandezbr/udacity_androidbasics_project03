@@ -1,6 +1,6 @@
 package br.com.luisfernandezbr.androidbasics_project03.pojo;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Created by luis.fernandez on 2/12/17.
@@ -10,20 +10,24 @@ public class SingleOptionQuestion extends Question {
 
     public static final String TYPE = "SINGLE_OPTION";
 
-    private List<Answer> answerList;
+    private Map<Integer, Answer> answerMap;
+    private Integer userAnswer;
 
-    public SingleOptionQuestion(String value, List<Answer> answerList) {
+    public SingleOptionQuestion(String value, Map<Integer, Answer> answerMap) {
         super(value, TYPE);
-        this.answerList = answerList;
+        this.answerMap = answerMap;
     }
 
-    public List<Answer> getAnswerList() {
-        return answerList;
+    public Map<Integer, Answer> getAnswerMap() {
+        return answerMap;
     }
 
-    @Override
-    public boolean isCorrectAnswer(Answer answer) {
-        return false;
+    public void setUserAnswer(Integer userAnswer) {
+        this.userAnswer = userAnswer;
+    }
+
+    public boolean isCorrectAnswer() {
+        return answerMap.get(userAnswer).isCorrect();
     }
 
 }
