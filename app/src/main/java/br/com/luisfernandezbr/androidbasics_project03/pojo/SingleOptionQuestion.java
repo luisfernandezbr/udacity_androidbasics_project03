@@ -26,6 +26,10 @@ public class SingleOptionQuestion extends Question {
         this.userAnswer = userAnswer;
     }
 
+    public Integer getUserAnswer() {
+        return userAnswer;
+    }
+
     public boolean isCorrectAnswer() {
         return answerMap.get(userAnswer).isCorrect();
     }

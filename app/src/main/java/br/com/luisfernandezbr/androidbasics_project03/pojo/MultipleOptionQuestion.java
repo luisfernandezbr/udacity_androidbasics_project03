@@ -29,6 +29,10 @@ public class MultipleOptionQuestion extends Question {
         this.userAnswerList = userAnswerList;
     }
 
+    public List<Integer> getUserAnswerList() {
+        return userAnswerList;
+    }
+
     public boolean isCorrectAnswer() {
         for (Integer key : answerMap.keySet()) {
             Answer answer = answerMap.get(key);

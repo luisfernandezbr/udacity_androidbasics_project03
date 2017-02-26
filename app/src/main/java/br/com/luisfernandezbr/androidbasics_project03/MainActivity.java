@@ -69,9 +69,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         } else {
-            Toast.makeText(this, "Finalizar jogo!", Toast.LENGTH_SHORT).show();
+            ResultActivity.start(this, (ArrayList<Question>) questionList);
         }
     }
+
+
 
     private void addQuestionView(LinearLayout layout) {
         this.loadLayoutContent().addView(layout);
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 String userAnswer = editAnswer.getText().toString();
                 question.setUserAnswer(userAnswer);
 
-                Toast.makeText(MainActivity.this, String.format("QUESTION:\n %s\n\nANSWER:\n %s", question.getValue(), userAnswer), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, String.format("QUESTION:\n %s\n\nANSWER:\n %s", question.getValue(), userAnswer), Toast.LENGTH_SHORT).show();
 
                 showNextQuestion(questionList, currentQuestionsIndex);
 
@@ -123,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
                         Answer answer = (Answer) buttonView.getTag();
-                        Toast.makeText(MainActivity.this, String.format("ANSWER:\n%s\n%s", answer.getValue().toString(), answer.isCorrect()), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, String.format("ANSWER:\n%s\n%s", answer.getValue().toString(), answer.isCorrect()), Toast.LENGTH_SHORT).show();
                         selectedOption[0] = key;
                     }
                 }
@@ -166,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
                         Answer answer = (Answer) buttonView.getTag();
-                        Toast.makeText(MainActivity.this, String.format("ANSWER:\n%s\n%s", answer.getValue().toString(), answer.isCorrect()), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, String.format("ANSWER:\n%s\n%s", answer.getValue().toString(), answer.isCorrect()), Toast.LENGTH_SHORT).show();
                         selectedOptions.add(key);
                     } else {
                         selectedOptions.remove(key);
@@ -220,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
 
         questionList.add(question3);
         questionList.add(question2);
-        //questionList.add(question1);
+        questionList.add(question1);
 
 
         return questionList;

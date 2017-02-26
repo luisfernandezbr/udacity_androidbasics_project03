@@ -1,10 +1,12 @@
 package br.com.luisfernandezbr.androidbasics_project03.pojo;
 
+import java.io.Serializable;
+
 /**
  * Created by luis.fernandez on 2/12/17.
  */
 
-public class Answer {
+public class Answer implements Serializable {
 
     private String value;
     private boolean isCorrect;
