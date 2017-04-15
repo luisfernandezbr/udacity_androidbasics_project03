@@ -1,5 +1,7 @@
 package br.com.luisfernandezbr.androidbasics_project03.pojo;
 
+import android.content.Intent;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,11 +27,19 @@ public class MultipleOptionQuestion extends Question {
         return answerMap;
     }
 
-    public void setUserAnswerList(List<Integer> userAnswerList) {
-        this.userAnswerList = userAnswerList;
+    public void addSelectedOption(Integer optionIndex) {
+        this.userAnswerList.add(optionIndex);
+    }
+
+    public void removeSelectedOption(Integer optionIndex) {
+        this.userAnswerList.remove(optionIndex);
     }
 
     public List<Integer> getUserAnswerList() {
         return userAnswerList;
+    }
+
+    public boolean isAnswered() {
+        return userAnswerList.size() > 0;
     }
 }

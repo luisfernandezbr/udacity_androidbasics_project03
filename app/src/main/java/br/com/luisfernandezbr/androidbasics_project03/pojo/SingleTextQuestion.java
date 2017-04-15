@@ -1,5 +1,7 @@
 package br.com.luisfernandezbr.androidbasics_project03.pojo;
 
+import android.text.TextUtils;
+
 /**
  * Created by luis.fernandez on 2/12/17.
  */
@@ -26,5 +28,10 @@ public class SingleTextQuestion extends Question {
 
     public void setUserAnswer(String userAnswer) {
         this.userAnswer = userAnswer;
+    }
+
+    @Override
+    public boolean isAnswered() {
+        return !TextUtils.isEmpty(userAnswer.trim());
     }
 }

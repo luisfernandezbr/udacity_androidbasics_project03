@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by luis.fernandez on 2/12/17.
  */
-public class Question implements Serializable {
+public abstract class Question implements Serializable {
 
     private String value;
     private String type;
@@ -22,4 +22,6 @@ public class Question implements Serializable {
     public String getType() {
         return type;
     }
+
+    public abstract boolean isAnswered();
 }

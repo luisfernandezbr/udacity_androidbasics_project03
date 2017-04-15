@@ -11,7 +11,7 @@ public class SingleOptionQuestion extends Question {
     public static final String TYPE = "SINGLE_OPTION";
 
     private Map<Integer, Answer> answerMap;
-    private Integer userAnswer;
+    private Integer userAnswer = -1;
 
     public SingleOptionQuestion(String value, Map<Integer, Answer> answerMap) {
         super(value, TYPE);
@@ -28,5 +28,10 @@ public class SingleOptionQuestion extends Question {
 
     public Integer getUserAnswer() {
         return userAnswer;
+    }
+
+    @Override
+    public boolean isAnswered() {
+        return userAnswer != -1;
     }
 }
