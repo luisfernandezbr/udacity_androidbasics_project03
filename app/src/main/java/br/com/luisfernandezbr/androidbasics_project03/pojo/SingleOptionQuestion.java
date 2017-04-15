@@ -34,4 +34,9 @@ public class SingleOptionQuestion extends Question {
     public boolean isAnswered() {
         return userAnswer != -1;
     }
+
+    @Override
+    public boolean isCorrectAnswered() {
+        return answerMap.get(userAnswer).isCorrect();
+    }
 }

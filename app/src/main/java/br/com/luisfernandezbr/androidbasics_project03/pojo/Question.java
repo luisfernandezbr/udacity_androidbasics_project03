@@ -24,4 +24,6 @@ public abstract class Question implements Serializable {
     }
 
     public abstract boolean isAnswered();
+
+    public abstract boolean isCorrectAnswered();
 }

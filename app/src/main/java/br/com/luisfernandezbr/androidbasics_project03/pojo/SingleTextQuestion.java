@@ -34,4 +34,9 @@ public class SingleTextQuestion extends Question {
     public boolean isAnswered() {
         return !TextUtils.isEmpty(userAnswer.trim());
     }
+
+    @Override
+    public boolean isCorrectAnswered() {
+        return this.answer.getValue().equals(this.getUserAnswer());
+    }
 }

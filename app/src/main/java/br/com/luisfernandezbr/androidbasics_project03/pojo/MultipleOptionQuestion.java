@@ -1,7 +1,5 @@
 package br.com.luisfernandezbr.androidbasics_project03.pojo;
 
-import android.content.Intent;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,5 +39,24 @@ public class MultipleOptionQuestion extends Question {
 
     public boolean isAnswered() {
         return userAnswerList.size() > 0;
+    }
+
+    @Override
+    public boolean isCorrectAnswered() {
+        for (Integer key : answerMap.keySet()) {
+            Answer answer = answerMap.get(key);
+
+            if (answer.isCorrect()) {
+                if (!userAnswerList.contains(key)) {
+                    return false;
+                }
+            } else {
+                if (userAnswerList.contains(key)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }
