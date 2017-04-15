@@ -31,9 +31,12 @@ import br.com.luisfernandezbr.androidbasics_project03.pojo.SingleTextQuestion;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String EXTRA_QUESTION_LIST = "EXTRA_QUESTION_LIST";
+    public static final String EXTRA_CURRENT_INDEX = "EXTRA_CURRENT_INDEX";
+
     private int currentQuestionsIndex = 0;
 
-    private List<Question> questionList;
+    private ArrayList<Question> questionList;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, MainActivity.class);
@@ -45,7 +48,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        questionList = this.loadQuestions();
+        if (savedInstanceState != null) {
+            questionList = (ArrayList<Question>) savedInstanceState.getSerializable(EXTRA_QUESTION_LIST);
+            currentQuestionsIndex = savedInstanceState.getInt(EXTRA_CURRENT_INDEX);
+        } else {
+            questionList = this.loadQuestions();
+            currentQuestionsIndex = 0;
+        }
 
         this.showNextQuestion(questionList, currentQuestionsIndex);
     }
@@ -54,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (currentQuestionIndex < questionList.size()) {
             Question question = questionList.get(currentQuestionIndex);
-
-            currentQuestionsIndex++;
 
             loadLayoutContent().removeAllViews();
 
@@ -97,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String userAnswer = editAnswer.getText().toString();
                 question.setUserAnswer(userAnswer);
-                showNextQuestion(questionList, currentQuestionsIndex);
+                showNextQuestion(questionList, ++currentQuestionsIndex);
 
             }
         });
@@ -137,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 question.setUserAnswer(selectedOption[0]);
 
-                showNextQuestion(questionList, currentQuestionsIndex);
+                showNextQuestion(questionList, ++currentQuestionsIndex);
             }
         });
 
@@ -179,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 question.setUserAnswerList(selectedOptions);
 
-                showNextQuestion(questionList, currentQuestionsIndex);
+                showNextQuestion(questionList, ++currentQuestionsIndex);
             }
         });
 
@@ -208,13 +215,12 @@ public class MainActivity extends AppCompatActivity {
         return (ViewGroup) findViewById(R.id.layoutContent);
     }
 
-
-    private List<Question> loadQuestions() {
+    private ArrayList<Question> loadQuestions() {
         Question question1 = this.getSingleTextQuestion();
         Question question2 = this.getSingleOptionQuestion();
         Question question3 = this.getMultipleOptionQuestion();
 
-        List<Question> questionList = new ArrayList<>(2);
+        ArrayList<Question> questionList = new ArrayList<>(2);
 
         questionList.add(question3);
         questionList.add(question2);
@@ -246,5 +252,13 @@ public class MainActivity extends AppCompatActivity {
         answerMap.put(3, new Answer("Red", false));
         answerMap.put(4, new Answer("Blue", true));
         return new MultipleOptionQuestion("What of the following colors are in the Golden State Warriors logo?", answerMap);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(EXTRA_QUESTION_LIST, questionList);
+        outState.putInt(EXTRA_CURRENT_INDEX, currentQuestionsIndex);
+
+        super.onSaveInstanceState(outState);
     }
 }
