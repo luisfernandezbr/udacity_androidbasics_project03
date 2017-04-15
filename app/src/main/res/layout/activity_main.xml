@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/home_backgroung"
+    android:background="@drawable/home_background"
     android:padding="@dimen/default_margin"
     tools:context="br.com.luisfernandezbr.androidbasics_project03.MainActivity">
-
 
     <FrameLayout
         android:id="@+id/layoutContent"
@@ -15,7 +14,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/buttonConfirmAnswer"
         android:animateLayoutChanges="true"
-        android:padding="16dp">
+        android:padding="@dimen/default_margin">
 
         <!--<include layout="@layout/comp_layout_text_answer"/>-->
 
@@ -26,6 +25,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="CONFIRM ANSWER"/>
+        android:text="@string/button_confirm_answer"/>
 
 </RelativeLayout>

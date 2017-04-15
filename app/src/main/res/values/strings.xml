@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">androidbasics-project03</string>
+    <string name="button_confirm_answer">CONFIRM ANSWER</string>
+    <string name="button_play_again">PLAY AGAIN</string>
+    <string name="button_show_result">SHOW RESULT</string>
 </resources>

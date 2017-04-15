@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/home_backgroung"
+    android:background="@drawable/home_background"
     android:padding="@dimen/default_margin">
 
     <ScrollView
@@ -42,15 +42,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickShowResult"
-            android:text="Show Result"/>
+            android:text="@string/button_show_result"/>
 
         <Button
             android:id="@+id/buttonPlayAgain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickPlayAgain"
-            android:text="Play Again"
+            android:text="@string/button_play_again"
             android:visibility="gone"/>
 
     </FrameLayout>
+
 </RelativeLayout>

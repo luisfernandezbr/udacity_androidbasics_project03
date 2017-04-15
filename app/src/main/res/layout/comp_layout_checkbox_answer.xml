@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingBottom="16dp"
+        android:paddingBottom="@dimen/default_margin"
         android:textSize="18sp"
         tools:text="What of the following colors are in the Golden State Warriors logo?"/>
 
@@ -20,7 +20,7 @@
         android:id="@+id/checkboxAnswer_01"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
+        android:padding="@dimen/default_margin_half"
         tools:text="Michael Jordan"
         />
 
@@ -28,7 +28,7 @@
         android:id="@+id/checkboxAnswer_02"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
+        android:padding="@dimen/default_margin_half"
         tools:text="Stephen Curry"
         />
 
@@ -36,7 +36,7 @@
         android:id="@+id/checkboxAnswer_03"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
+        android:padding="@dimen/default_margin_half"
         tools:text="Klay Thompson"
         />
 
@@ -44,9 +44,8 @@
         android:id="@+id/checkboxAnswer_04"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
+        android:padding="@dimen/default_margin_half"
         tools:text="Andre Iguodala"
         />
-
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="default_margin_half">8dp</dimen>
     <dimen name="default_margin">16dp</dimen>
 
     <dimen name="font_size_screen_title">22sp</dimen>
