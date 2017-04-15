@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingBottom="16dp"
-        android:textSize="18sp"
+        android:textColor="@android:color/primary_text_dark"
+        android:textSize="@dimen/font_size_score_title"
         tools:text="What is the name of the coach that led the team in the last Golden State Warrior's title?"/>
 
     <EditText

@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingBottom="@dimen/default_margin"
-        android:textSize="18sp"
+        android:textColor="@android:color/primary_text_dark"
+        android:textSize="@dimen/font_size_score_title"
         tools:text="What of the following colors are in the Golden State Warriors logo?"/>
 
     <CheckBox
