@@ -220,10 +220,12 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Question> loadQuestions() {
         Question question1 = this.getSingleTextQuestion();
         Question question2 = this.getSingleOptionQuestion();
-        Question question3 = this.getMultipleOptionQuestion();
+        Question question3 = this.getSingleOptionQuestionTwo();
+        Question question4 = this.getMultipleOptionQuestion();
 
-        ArrayList<Question> questionList = new ArrayList<>(2);
+        ArrayList<Question> questionList = new ArrayList<>(4);
 
+        questionList.add(question4);
         questionList.add(question3);
         questionList.add(question2);
         questionList.add(question1);
@@ -245,6 +247,15 @@ public class MainActivity extends AppCompatActivity {
         answerMap.put(3, new Answer("Klay Thompson", false));
         answerMap.put(4, new Answer("Andre Iguodala", false));
         return new SingleOptionQuestion("What of the following player was not in the champion team in the 2015/2016 season?", answerMap);
+    }
+
+    private Question getSingleOptionQuestionTwo() {
+        Map<Integer, Answer> answerMap = new HashMap<>(4);
+        answerMap.put(1, new Answer("73/9 wins/loses ", true));
+        answerMap.put(2, new Answer("69/12 wins/loses", false));
+        answerMap.put(3, new Answer("79/3 wins/loses", false));
+        answerMap.put(4, new Answer("56/26 wins/loses", false));
+        return new SingleOptionQuestion("How many games Golden State Warriors won when broke the wins record in 2015/2016 NBA regular season?" , answerMap);
     }
 
     @NonNull
