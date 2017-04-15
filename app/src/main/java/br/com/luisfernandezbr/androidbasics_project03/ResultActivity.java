@@ -3,14 +3,14 @@ package br.com.luisfernandezbr.androidbasics_project03;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -24,6 +24,12 @@ public class ResultActivity extends AppCompatActivity {
 
     public static final String EXTRA_QUESTION_LIST = "questionList";
 
+    private TextView textResult;
+
+    private int numberOfQuestions;
+    private int numberOfCorrectQuestions;
+    private ArrayList<Question> questionList;
+
     public static void start(Context context, ArrayList<Question> questionList) {
         Intent starter = new Intent(context, ResultActivity.class);
         starter.putExtra(EXTRA_QUESTION_LIST, questionList);
@@ -36,12 +42,17 @@ public class ResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        ArrayList<Question> questionList = (ArrayList<Question>) getIntent().getSerializableExtra(EXTRA_QUESTION_LIST);
+        this.questionList = (ArrayList<Question>) getIntent().getSerializableExtra(EXTRA_QUESTION_LIST);
 
+        this.textResult = (TextView) findViewById(R.id.textResult);
+
+        this.previewResult();
+    }
+
+    private void previewResult() {
         String result = "Questions explanation:\n\n";
 
-        int numberOfQuestions = questionList.size();
-        int numberOfCorrectQuestions = 0;
+        this.numberOfQuestions = questionList.size();
 
         for (int i = 0; i < questionList.size() ; i++) {
             Question question = questionList.get(i);
@@ -50,9 +61,7 @@ public class ResultActivity extends AppCompatActivity {
                 numberOfCorrectQuestions++;
             }
 
-            result += String.format(
-                    " >>>>>>>>>> QUESTION %d:\n" +
-                    "%s\n\n", (i + 1), question.getValue());
+            result += this.getQuestionResultTitle(i, question);
 
             switch (question.getType()) {
                 case SingleTextQuestion.TYPE : {
@@ -70,20 +79,33 @@ public class ResultActivity extends AppCompatActivity {
             }
         }
 
-        String scoreMessage = this.getScoreMessage(numberOfQuestions, numberOfCorrectQuestions);
-
-        this.showToast(scoreMessage);
-
-        TextView textResult = (TextView) findViewById(R.id.textResult);
-        textResult.setText(scoreMessage + "\n\n" + result);
+        textResult.setText(result);
     }
 
-    private String getScoreMessage(int numberOfQuestions, int numberOfCorrectQuestions) {
-        return String.format(Locale.getDefault(), "YOUR SCORE IS %d of %d", numberOfCorrectQuestions, numberOfQuestions);
+    private String getQuestionResultTitle(int questionIndex, Question question) {
+        return String.format(Locale.getDefault(),
+                ">>>> QUESTION %d <<<<:\n" +
+                        "%s\n\n", (questionIndex + 1), question.getValue());
+    }
+
+    private void showScore() {
+        String scoreMessage = this.getScoreMessage(numberOfQuestions, numberOfCorrectQuestions);
+        this.showToast(scoreMessage);
+        this.textResult.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        this.textResult.setText(scoreMessage);
+    }
+
+    private String getScoreMessage(double numberOfQuestions, double numberOfCorrectQuestions) {
+        double percentage = (numberOfCorrectQuestions / numberOfQuestions) * 100;
+
+        return String.format(Locale.getDefault(), "YOUR SCORE IS %d of %d\n%d percent of correctness",
+                (int)numberOfCorrectQuestions,
+                (int)numberOfQuestions,
+                (int)percentage);
     }
 
     private void showToast(String scoreMessage) {
-        Toast.makeText(this, scoreMessage, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, scoreMessage, Toast.LENGTH_LONG).show();
     }
 
     String message =
@@ -139,5 +161,12 @@ public class ResultActivity extends AppCompatActivity {
     public void onClickPlayAgain(View view) {
         MainActivity.start(this);
         finish();
+    }
+
+    public void onClickShowResult(View view) {
+        this.showScore();
+
+        view.setVisibility(View.GONE);
+        findViewById(R.id.buttonPlayAgain).setVisibility(View.VISIBLE);
     }
 }
