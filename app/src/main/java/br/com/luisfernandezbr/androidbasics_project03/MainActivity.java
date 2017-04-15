@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,8 +102,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String userAnswer = editAnswer.getText().toString();
                 question.setUserAnswer(userAnswer);
-                showNextQuestion(questionList, ++currentQuestionsIndex);
 
+                if (question.isAnswered()) {
+                    showNextQuestion(questionList, ++currentQuestionsIndex);
+                } else {
+                    Toast.makeText(MainActivity.this, "Provide your answer before proceed. ; )", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -117,8 +122,6 @@ public class MainActivity extends AppCompatActivity {
 
         Map<Integer, Answer> answerMap = question.getAnswerMap();
 
-        final Integer[] selectedOption = new Integer[1];
-
         for (final Integer key : answerMap.keySet()) {
             Answer answer = answerMap.get(key);
 
@@ -129,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        selectedOption[0] = key;
+                        question.setUserAnswer(key);
                     }
                 }
             });
@@ -139,9 +142,11 @@ public class MainActivity extends AppCompatActivity {
         buttonConfirmAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                question.setUserAnswer(selectedOption[0]);
-
-                showNextQuestion(questionList, ++currentQuestionsIndex);
+                if (question.isAnswered()) {
+                    showNextQuestion(questionList, ++currentQuestionsIndex);
+                } else {
+                    Toast.makeText(MainActivity.this, "Provide your answer before proceed. ; )", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -156,8 +161,6 @@ public class MainActivity extends AppCompatActivity {
 
         Map<Integer, Answer> answerMap = question.getAnswerMap();
 
-        final List<Integer> selectedOptions = new ArrayList<>(answerMap.size());
-
         for (final Integer key : answerMap.keySet()) {
             final Answer answer = answerMap.get(key);
 
@@ -168,10 +171,10 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        selectedOptions.add(key);
+                        question.addSelectedOption(key);
 
                     } else {
-                        selectedOptions.remove(key);
+                        question.removeSelectedOption(key);
                     }
                 }
             });
@@ -181,9 +184,11 @@ public class MainActivity extends AppCompatActivity {
         buttonConfirmAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                question.setUserAnswerList(selectedOptions);
-
-                showNextQuestion(questionList, ++currentQuestionsIndex);
+                if (question.isAnswered()) {
+                    showNextQuestion(questionList, ++currentQuestionsIndex);
+                } else {
+                    Toast.makeText(MainActivity.this, "Provide your answer before proceed. ; )", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
