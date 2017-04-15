@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import br.com.luisfernandezbr.androidbasics_project03.pojo.Answer;
@@ -37,10 +38,17 @@ public class ResultActivity extends AppCompatActivity {
 
         ArrayList<Question> questionList = (ArrayList<Question>) getIntent().getSerializableExtra(EXTRA_QUESTION_LIST);
 
-        String result = "Quiz Result!\n\n";
+        String result = "Questions explanation:\n\n";
+
+        int numberOfQuestions = questionList.size();
+        int numberOfCorrectQuestions = 0;
 
         for (int i = 0; i < questionList.size() ; i++) {
             Question question = questionList.get(i);
+
+            if (question.isCorrectAnswered()) {
+                numberOfCorrectQuestions++;
+            }
 
             result += String.format(
                     " >>>>>>>>>> QUESTION %d:\n" +
@@ -62,8 +70,20 @@ public class ResultActivity extends AppCompatActivity {
             }
         }
 
+        String scoreMessage = this.getScoreMessage(numberOfQuestions, numberOfCorrectQuestions);
+
+        this.showToast(scoreMessage);
+
         TextView textResult = (TextView) findViewById(R.id.textResult);
-        textResult.setText(result);
+        textResult.setText(scoreMessage + "\n\n" + result);
+    }
+
+    private String getScoreMessage(int numberOfQuestions, int numberOfCorrectQuestions) {
+        return String.format(Locale.getDefault(), "YOUR SCORE IS %d of %d", numberOfCorrectQuestions, numberOfQuestions);
+    }
+
+    private void showToast(String scoreMessage) {
+        Toast.makeText(this, scoreMessage, Toast.LENGTH_SHORT).show();
     }
 
     String message =
