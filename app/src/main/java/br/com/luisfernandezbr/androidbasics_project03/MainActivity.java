@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        this.setContentView(R.layout.activity_main);
 
         if (savedInstanceState != null) {
             questionList = (ArrayList<Question>) savedInstanceState.getSerializable(EXTRA_QUESTION_LIST);
@@ -60,22 +60,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showNextQuestion(List<Question> questionList, int currentQuestionIndex) {
-
         if (currentQuestionIndex < questionList.size()) {
             Question question = questionList.get(currentQuestionIndex);
 
             loadLayoutContent().removeAllViews();
 
             switch (question.getType()) {
-                case SingleTextQuestion.TYPE : {
+                case SingleTextQuestion.TYPE: {
                     this.showSingleTextQuestion((SingleTextQuestion) question);
                     break;
                 }
-                case SingleOptionQuestion.TYPE : {
+                case SingleOptionQuestion.TYPE: {
                     this.showSingleOptionQuestion((SingleOptionQuestion) question);
                     break;
                 }
-                case MultipleOptionQuestion.TYPE : {
+                case MultipleOptionQuestion.TYPE: {
                     this.showMultipleOptionQuestion((MultipleOptionQuestion) question);
                     break;
                 }
@@ -85,8 +84,6 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
     }
-
-
 
     private void addQuestionView(LinearLayout layout) {
         this.loadLayoutContent().addView(layout);
@@ -116,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout layout = this.inflateLayout(R.layout.comp_layout_radio_answer);
         this.setQuestionTitle(layout, question.getValue());
 
-        int [] radioIds = {R.id.radioButtonAnswer_01, R.id.radioButtonAnswer_02, R.id.radioButtonAnswer_03, R.id.radioButtonAnswer_04};
+        int[] radioIds = {R.id.radioButtonAnswer_01, R.id.radioButtonAnswer_02, R.id.radioButtonAnswer_03, R.id.radioButtonAnswer_04};
 
         Map<Integer, Answer> answerMap = question.getAnswerMap();
 
@@ -155,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout layout = this.inflateLayout(R.layout.comp_layout_checkbox_answer);
         this.setQuestionTitle(layout, question.getValue());
 
-        final int [] checkboxIds = {R.id.checkboxAnswer_01, R.id.checkboxAnswer_02, R.id.checkboxAnswer_03, R.id.checkboxAnswer_04};
+        final int[] checkboxIds = {R.id.checkboxAnswer_01, R.id.checkboxAnswer_02, R.id.checkboxAnswer_03, R.id.checkboxAnswer_04};
 
         Map<Integer, Answer> answerMap = question.getAnswerMap();
 
@@ -228,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
         return questionList;
     }
+
 
     @NonNull
     private Question getSingleTextQuestion() {
