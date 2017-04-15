@@ -19,10 +19,6 @@ public class Question implements Serializable {
         return value;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-
     public String getType() {
         return type;
     }

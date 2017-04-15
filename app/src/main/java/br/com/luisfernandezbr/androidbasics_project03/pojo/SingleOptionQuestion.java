@@ -29,9 +29,4 @@ public class SingleOptionQuestion extends Question {
     public Integer getUserAnswer() {
         return userAnswer;
     }
-
-    public boolean isCorrectAnswer() {
-        return answerMap.get(userAnswer).isCorrect();
-    }
-
 }

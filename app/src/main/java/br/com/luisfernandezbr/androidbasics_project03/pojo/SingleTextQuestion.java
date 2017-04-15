@@ -27,8 +27,4 @@ public class SingleTextQuestion extends Question {
     public void setUserAnswer(String userAnswer) {
         this.userAnswer = userAnswer;
     }
-
-    public boolean isCorrectAnswer() {
-        return answer.getValue().toString().equalsIgnoreCase(userAnswer);
-    }
 }

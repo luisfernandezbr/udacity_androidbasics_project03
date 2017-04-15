@@ -32,23 +32,4 @@ public class MultipleOptionQuestion extends Question {
     public List<Integer> getUserAnswerList() {
         return userAnswerList;
     }
-
-    public boolean isCorrectAnswer() {
-        for (Integer key : answerMap.keySet()) {
-            Answer answer = answerMap.get(key);
-
-            if (answer.isCorrect()) {
-                if (!userAnswerList.contains(key)) {
-                    return false;
-                }
-            } else {
-                if (userAnswerList.contains(key)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
 }

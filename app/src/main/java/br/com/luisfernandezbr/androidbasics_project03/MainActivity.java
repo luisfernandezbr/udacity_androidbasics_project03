@@ -220,7 +220,6 @@ public class MainActivity extends AppCompatActivity {
         questionList.add(question2);
         questionList.add(question1);
 
-
         return questionList;
     }
 
